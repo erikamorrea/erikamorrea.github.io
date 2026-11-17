@@ -1,0 +1,143 @@
+.title {
+  text-align: center;
+  padding: 140px 40px 100px;
+}
+
+.title h1 {
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* Projects */
+.projects {
+  padding: 0 40px 160px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Zig-zag row: photo on one side; on the other side the group caption (top) and the number (bottom) */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 18%;
+  align-items: stretch;
+  margin-bottom: 0;
+}
+
+/* Extra breathing room before a new group of photos */
+.groupStart {
+  margin-top: 140px;
+}
+
+.photo {
+  width: 100%;
+  align-self: end;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.side .numWrap {
+  margin-top: auto;
+}
+
+.sideLeft {
+  align-items: flex-start;
+  padding-left: 12%;
+}
+
+.sideRight {
+  align-items: flex-end;
+  padding-right: 12%;
+  text-align: right;
+}
+
+.number {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--color-text-light);
+  font-weight: 300;
+  display: block;
+}
+
+.caption {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text);
+  font-weight: 400;
+  display: block;
+}
+
+.fullRow {
+  margin: 120px 0 40px;
+}
+
+.captionFull {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.numFull {
+  margin-top: 16px;
+  text-align: right;
+  padding-right: 6%;
+}
+
+@media (max-width: 768px) {
+  .title {
+    padding: 110px 20px 60px;
+  }
+
+  .projects {
+    padding: 0 20px 80px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    row-gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  /* On mobile: caption above the photo, number underneath */
+  .side {
+    display: contents;
+  }
+
+  .groupStart {
+    margin-top: 72px;
+  }
+
+  .row .captionWrap {
+    order: 0;
+    text-align: left;
+  }
+
+  .row .photo {
+    order: 1;
+  }
+
+  .row .numWrap {
+    order: 2;
+    text-align: left;
+  }
+
+  .captionFull {
+    text-align: left;
+    margin-bottom: 12px;
+  }
+
+  .fullRow {
+    margin: 48px 0;
+  }
+
+  .numFull {
+    text-align: left;
+    padding: 0;
+  }
+}

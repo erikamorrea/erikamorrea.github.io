@@ -1,0 +1,44 @@
+.footer {
+  background: var(--color-dark-bg);
+  color: var(--color-dark-text);
+  padding: 48px 40px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.name, .location {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 300;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.link:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 32px 20px;
+  }
+}

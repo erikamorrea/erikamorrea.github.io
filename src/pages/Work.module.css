@@ -1,0 +1,121 @@
+/* Hero: full-width landscape photo filling the first screen */
+.hero {
+  width: 100%;
+  height: 100vh;
+  min-height: 480px;
+  overflow: hidden;
+  position: relative;
+}
+
+.heroPicture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.heroImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* anchor to the left so the kids at the railing are never cut off */
+  object-position: left 75%;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 56px 40px;
+  font-weight: 400;
+}
+
+/* Flex instead of grid so the last, incomplete row is centred */
+.grid {
+  --cols: 8;
+  --gap: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+  padding: 0 40px 70px;
+  position: relative; /* reference for the hover preview */
+}
+
+.gridItem {
+  width: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  aspect-ratio: 1;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Enlarged, uncropped photo on hover (drawn above the whole grid) */
+.preview {
+  position: absolute;
+  z-index: 100;
+  pointer-events: none;
+  overflow: hidden;
+  outline: 6px solid var(--color-bg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  /* own compositing layer: keeps it above animated tiles in Safari too */
+  transform: translateZ(0);
+  will-change: left, top, width, height;
+}
+
+.previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gridImg {
+  object-position: center !important;
+}
+
+.gridImg {
+  object-position: center !important;
+}
+
+/* No hover on touch screens: don't leave photos stuck enlarged after a tap */
+@media (hover: none) {
+  .gridItem:hover .gridInner {
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+.gridImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  /* Vertical photo shown whole on phones */
+  .hero {
+    height: auto;
+    min-height: 0;
+  }
+
+  .heroImg {
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-position: center;
+  }
+
+  .grid {
+    --cols: 4;
+    --gap: 3px;
+    padding: 0 16px 40px;
+  }
+
+  .sectionTitle {
+    padding: 36px 20px;
+    font-size: 10px;
+  }
+}
