@@ -70,24 +70,7 @@
   display: block;
 }
 
-.gridImg {
-  object-position: center !important;
-}
-
-.gridImg {
-  object-position: center !important;
-}
-
-/* No hover on touch screens: don't leave photos stuck enlarged after a tap */
-@media (hover: none) {
-  .gridItem:hover .gridInner {
-    width: 100%;
-    height: 100%;
-    box-shadow: none;
-    outline: none;
-  }
-}
-
+/* Square thumbnail; which part stays visible is set per photo (`pos` in Work.jsx) */
 .gridImg {
   width: 100%;
   height: 100%;
