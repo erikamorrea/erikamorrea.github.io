@@ -1,5 +1,12 @@
-import { useRef, useState } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useInView,
+  useReducedMotion,
+} from 'framer-motion'
 import PageTransition from '../components/PageTransition'
 import Footer from '../components/Footer'
 import Lightbox from '../components/Lightbox'
@@ -16,23 +23,47 @@ function Hero() {
   })
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3])
-  const ease = [0.22, 1, 0.36, 1]
+  const ease = [0.76, 0, 0.24, 1]
+  const reduceMotion = useReducedMotion()
+
+  // Start the intro only once the photo has loaded, so it never reveals an empty frame
+  const imgRef = useRef(null)
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => {
+    if (imgRef.current?.complete) setLoaded(true)
+  }, [])
+
+  const show = loaded || reduceMotion
 
   return (
     <section ref={ref} className={styles.hero}>
-      <picture className={styles.heroPicture}>
-        {/* On phones show the original vertical photo instead of the landscape crop */}
-        <source media="(max-width: 768px)" srcSet={`${BASE}images/hero-mobile.jpg`} />
-        <motion.img
-          src={`${BASE}images/hero.jpg`}
-          alt=""
-          className={styles.heroImg}
-          style={{ scale, opacity }}
-          initial={{ scale: 1.15, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.4, ease }}
-        />
-      </picture>
+      {/* Intro: the photo opens like a curtain from the centre while slowly zooming out */}
+      <motion.div
+        className={styles.heroReveal}
+        initial={reduceMotion ? false : { clipPath: 'inset(0 50% 0 50%)' }}
+        animate={show ? { clipPath: 'inset(0 0% 0 0%)' } : undefined}
+        transition={{ duration: 1.6, ease, delay: 0.2 }}
+      >
+        <motion.div
+          className={styles.heroZoom}
+          initial={reduceMotion ? false : { scale: 1.25 }}
+          animate={show ? { scale: 1 } : undefined}
+          transition={{ duration: 2.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        >
+          <picture className={styles.heroPicture}>
+            {/* On phones show the original vertical photo instead of the landscape crop */}
+            <source media="(max-width: 768px)" srcSet={`${BASE}images/hero-mobile.jpg`} />
+            <motion.img
+              ref={imgRef}
+              src={`${BASE}images/hero.jpg`}
+              alt=""
+              className={styles.heroImg}
+              style={{ scale, opacity }}
+              onLoad={() => setLoaded(true)}
+            />
+          </picture>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }
