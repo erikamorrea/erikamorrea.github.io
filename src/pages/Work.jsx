@@ -4,6 +4,9 @@ import PageTransition from '../components/PageTransition'
 import Footer from '../components/Footer'
 import styles from './Work.module.css'
 
+// Site address prefix (e.g. /erikamorreaphotography/ on GitHub Pages), so images load from any address
+const BASE = import.meta.env.BASE_URL
+
 function Hero() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -18,9 +21,9 @@ function Hero() {
     <section ref={ref} className={styles.hero}>
       <picture className={styles.heroPicture}>
         {/* On phones show the original vertical photo instead of the landscape crop */}
-        <source media="(max-width: 768px)" srcSet="/images/hero-mobile.jpg" />
+        <source media="(max-width: 768px)" srcSet={`${BASE}images/hero-mobile.jpg`} />
         <motion.img
-          src="/images/hero.jpg"
+          src={`${BASE}images/hero.jpg`}
           alt=""
           className={styles.heroImg}
           style={{ scale, opacity }}
@@ -36,29 +39,29 @@ function Hero() {
 // Grid photos in order. `pos` = which part stays visible in the square crop, so subjects aren't cut off.
 // `ar` = width / height of the original, used to show the whole photo on hover.
 const gridPhotos = [
-  { src: '/images/grid/grid-01.jpg', pos: 'center 45%', ar: 0.667 },
-  { src: '/images/grid/grid-02.jpg', pos: '45% center', ar: 1.501 },
-  { src: '/images/grid/grid-03.jpg', pos: 'center 50%', ar: 0.667 },
-  { src: '/images/grid/grid-04.jpg', pos: 'center 85%', ar: 0.667 },
-  { src: '/images/grid/grid-05.jpg', pos: '55% center', ar: 1.501 },
-  { src: '/images/grid/grid-06.jpg', pos: 'center 55%', ar: 0.666 },
-  { src: '/images/grid/grid-07.jpg', pos: 'center', ar: 1.498 },
-  { src: '/images/grid/grid-08.jpg', pos: 'center 65%', ar: 0.667 },
-  { src: '/images/grid/grid-09.jpg', pos: 'center 45%', ar: 0.667 },
-  { src: '/images/grid/grid-10.jpg', pos: 'center 70%', ar: 0.667 },
-  { src: '/images/grid/grid-11.jpg', pos: 'center 100%', ar: 0.669 },
-  { src: '/images/grid/grid-12.jpg', pos: 'center 40%', ar: 0.665 },
-  { src: '/images/grid/grid-13.jpg', pos: 'center 35%', ar: 0.666 },
-  { src: '/images/grid/grid-14.jpg', pos: '45% center', ar: 1.501 },
-  { src: '/images/grid/grid-15.jpg', pos: 'center 70%', ar: 0.666 },
-  { src: '/images/grid/grid-16.jpg', pos: 'center', ar: 1.501 },
-  { src: '/images/grid/grid-17.jpg', pos: 'center 65%', ar: 0.666 },
-  { src: '/images/grid/grid-18.jpg', pos: 'center 58%', ar: 0.557 },
-  { src: '/images/grid/grid-19.jpg', pos: 'center 55%', ar: 0.667 },
-  { src: '/images/grid/grid-20.jpg', pos: 'center 62%', ar: 0.667 },
-  { src: '/images/grid/grid-21.jpg', pos: 'center 80%', ar: 0.667 },
-  { src: '/images/grid/grid-22.jpg', pos: 'center 70%', ar: 0.667 },
-  { src: '/images/grid/grid-23.jpg', pos: 'center 45%', ar: 0.666 },
+  { src: BASE + 'images/grid/grid-01.jpg', pos: 'center 45%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-02.jpg', pos: '45% center', ar: 1.501 },
+  { src: BASE + 'images/grid/grid-03.jpg', pos: 'center 50%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-04.jpg', pos: 'center 85%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-05.jpg', pos: '55% center', ar: 1.501 },
+  { src: BASE + 'images/grid/grid-06.jpg', pos: 'center 55%', ar: 0.666 },
+  { src: BASE + 'images/grid/grid-07.jpg', pos: 'center', ar: 1.498 },
+  { src: BASE + 'images/grid/grid-08.jpg', pos: 'center 65%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-09.jpg', pos: 'center 45%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-10.jpg', pos: 'center 70%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-11.jpg', pos: 'center 100%', ar: 0.669 },
+  { src: BASE + 'images/grid/grid-12.jpg', pos: 'center 40%', ar: 0.665 },
+  { src: BASE + 'images/grid/grid-13.jpg', pos: 'center 35%', ar: 0.666 },
+  { src: BASE + 'images/grid/grid-14.jpg', pos: '45% center', ar: 1.501 },
+  { src: BASE + 'images/grid/grid-15.jpg', pos: 'center 70%', ar: 0.666 },
+  { src: BASE + 'images/grid/grid-16.jpg', pos: 'center', ar: 1.501 },
+  { src: BASE + 'images/grid/grid-17.jpg', pos: 'center 65%', ar: 0.666 },
+  { src: BASE + 'images/grid/grid-18.jpg', pos: 'center 58%', ar: 0.557 },
+  { src: BASE + 'images/grid/grid-19.jpg', pos: 'center 55%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-20.jpg', pos: 'center 62%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-21.jpg', pos: 'center 80%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-22.jpg', pos: 'center 70%', ar: 0.667 },
+  { src: BASE + 'images/grid/grid-23.jpg', pos: 'center 45%', ar: 0.666 },
 ]
 
 function GridItem({ index, photo, onEnter, onLeave }) {

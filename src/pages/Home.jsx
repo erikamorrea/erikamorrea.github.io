@@ -6,6 +6,9 @@ import RevealText from '../components/RevealText'
 import Footer from '../components/Footer'
 import styles from './Home.module.css'
 
+// Site address prefix (e.g. /erikamorreaphotography/ on GitHub Pages), so images load from any address
+const BASE = import.meta.env.BASE_URL
+
 function HeroTitle() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -29,17 +32,17 @@ function HeroTitle() {
 }
 
 const photos = [
-  { side: 'right', aspect: '2/3', src: '/images/home-01.jpg', caption: 'Damiano, Portrait' },
-  { side: 'left', aspect: '2/3', src: '/images/home-02.jpg' },
-  { side: 'right', aspect: '3/2', src: '/images/home-03.jpg' },
-  { side: 'left', aspect: '2/3', src: '/images/home-04.jpg', caption: 'Kids playing, Street Photography' },
-  { side: 'right', aspect: '2/3', src: '/images/home-05.jpg' },
-  { side: 'full', aspect: '21/9', src: '/images/home-06.jpg', caption: 'A woman, Street Photography' },
-  { side: 'left', aspect: '2/3', src: '/images/home-07.jpg', caption: 'Marika, Portrait & Street Photography' },
-  { side: 'right', aspect: '2/3', src: '/images/home-08.jpg' },
-  { side: 'left', aspect: '2/3', src: '/images/home-09.jpg', caption: 'People in Nemi, Street Photography' },
-  { side: 'right', aspect: '2/3', src: '/images/home-10.jpg' },
-  { side: 'left', aspect: '2/3', src: '/images/home-11.jpg' },
+  { side: 'right', aspect: '2/3', src: BASE + 'images/home-01.jpg', caption: 'Damiano, Portrait' },
+  { side: 'left', aspect: '2/3', src: BASE + 'images/home-02.jpg' },
+  { side: 'right', aspect: '3/2', src: BASE + 'images/home-03.jpg' },
+  { side: 'left', aspect: '2/3', src: BASE + 'images/home-04.jpg', caption: 'Kids playing, Street Photography' },
+  { side: 'right', aspect: '2/3', src: BASE + 'images/home-05.jpg' },
+  { side: 'full', aspect: '21/9', src: BASE + 'images/home-06.jpg', caption: 'A woman, Street Photography' },
+  { side: 'left', aspect: '2/3', src: BASE + 'images/home-07.jpg', caption: 'Marika, Portrait & Street Photography' },
+  { side: 'right', aspect: '2/3', src: BASE + 'images/home-08.jpg' },
+  { side: 'left', aspect: '2/3', src: BASE + 'images/home-09.jpg', caption: 'People in Nemi, Street Photography' },
+  { side: 'right', aspect: '2/3', src: BASE + 'images/home-10.jpg' },
+  { side: 'left', aspect: '2/3', src: BASE + 'images/home-11.jpg' },
 ]
 
 function Photo({ p }) {
