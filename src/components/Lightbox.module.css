@@ -16,6 +16,10 @@
   height: 100%;
   object-fit: contain;
   display: block;
+  /* thumbnail placeholder, same framing as the photo, visible until the large one loads */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .close {

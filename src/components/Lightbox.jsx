@@ -5,11 +5,13 @@ import styles from './Lightbox.module.css'
 
 /*
   Full-screen view of a single photo. Tap/click anywhere or press Esc to close.
+  `photo` = { full, thumb }: the small thumbnail (already loaded) shows at once
+  behind the large version, which then sharpens the picture as soon as it arrives.
   Rendered straight into <body> so page animations/transforms can't shift it.
 */
-export default function Lightbox({ src, onClose }) {
+export default function Lightbox({ photo, onClose }) {
   useEffect(() => {
-    if (!src) return
+    if (!photo) return
     const onKey = e => e.key === 'Escape' && onClose()
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden' // no page scrolling behind the photo
@@ -18,11 +20,11 @@ export default function Lightbox({ src, onClose }) {
       document.body.style.overflow = prevOverflow
       window.removeEventListener('keydown', onKey)
     }
-  }, [src, onClose])
+  }, [photo, onClose])
 
   return createPortal(
     <AnimatePresence>
-      {src && (
+      {photo && (
         <motion.div
           className={styles.backdrop}
           onClick={onClose}
@@ -35,10 +37,11 @@ export default function Lightbox({ src, onClose }) {
           aria-label="Foto a schermo intero"
         >
           <motion.img
-            key={src}
-            src={src}
+            key={photo.full}
+            src={photo.full}
             alt=""
             className={styles.photo}
+            style={{ backgroundImage: `url(${photo.thumb})` }}
             initial={{ scale: 0.94, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.97, opacity: 0 }}

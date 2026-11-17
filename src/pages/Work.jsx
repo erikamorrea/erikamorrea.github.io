@@ -82,7 +82,8 @@ function GridItem({ index, photo, onEnter, onLeave, onOpen }) {
       }}
       onMouseEnter={() => onEnter(index, ref.current)}
       onMouseLeave={onLeave}
-      onClick={() => onOpen(photo.src)}
+      // full-screen view uses the larger version in images/grid/full/
+      onClick={() => onOpen({ full: photo.src.replace('/grid/', '/grid/full/'), thumb: photo.src })}
     >
       <img
         src={photo.src}
@@ -127,9 +128,9 @@ export default function Work() {
   const [preview, setPreview] = useState(null)
   const [openSrc, setOpenSrc] = useState(null) // photo shown full screen
 
-  const openPhoto = src => {
+  const openPhoto = photo => {
     setPreview(null)
-    setOpenSrc(src)
+    setOpenSrc(photo)
   }
 
   const showPreview = (index, el) => {
@@ -182,7 +183,7 @@ export default function Work() {
         <HoverPreview preview={preview} />
       </div>
 
-      <Lightbox src={openSrc} onClose={() => setOpenSrc(null)} />
+      <Lightbox photo={openSrc} onClose={() => setOpenSrc(null)} />
 
       <Footer />
     </PageTransition>
