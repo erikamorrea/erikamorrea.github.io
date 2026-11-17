@@ -23,7 +23,6 @@ function Hero() {
   })
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3])
-  const ease = [0.76, 0, 0.24, 1]
   const reduceMotion = useReducedMotion()
 
   // Start the intro only once the photo has loaded, so it never reveals an empty frame
@@ -37,16 +36,13 @@ function Hero() {
 
   return (
     <section ref={ref} className={styles.hero}>
-      {/* Intro: the photo slides up from the bottom into its frame, settling with a light zoom-out */}
+      {/* Intro: after a short pause the photo simply fades in */}
       <div className={styles.heroReveal}>
         <motion.div
           className={styles.heroZoom}
-          initial={reduceMotion ? false : { y: '100%', scale: 1.1 }}
-          animate={show ? { y: '0%', scale: 1 } : undefined}
-          transition={{
-            y: { duration: 1.4, ease, delay: 0.2 },
-            scale: { duration: 2.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
-          }}
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={show ? { opacity: 1 } : undefined}
+          transition={{ duration: 1.5, ease: 'easeInOut', delay: 1.2 }}
         >
           <picture className={styles.heroPicture}>
             {/* On phones show the original vertical photo instead of the landscape crop */}
