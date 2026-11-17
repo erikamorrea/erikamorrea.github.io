@@ -37,18 +37,16 @@ function Hero() {
 
   return (
     <section ref={ref} className={styles.hero}>
-      {/* Intro: the photo opens like a curtain from the centre while slowly zooming out */}
-      <motion.div
-        className={styles.heroReveal}
-        initial={reduceMotion ? false : { clipPath: 'inset(0 50% 0 50%)' }}
-        animate={show ? { clipPath: 'inset(0 0% 0 0%)' } : undefined}
-        transition={{ duration: 1.6, ease, delay: 0.2 }}
-      >
+      {/* Intro: the photo slides up from the bottom into its frame, settling with a light zoom-out */}
+      <div className={styles.heroReveal}>
         <motion.div
           className={styles.heroZoom}
-          initial={reduceMotion ? false : { scale: 1.25 }}
-          animate={show ? { scale: 1 } : undefined}
-          transition={{ duration: 2.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          initial={reduceMotion ? false : { y: '100%', scale: 1.1 }}
+          animate={show ? { y: '0%', scale: 1 } : undefined}
+          transition={{
+            y: { duration: 1.4, ease, delay: 0.2 },
+            scale: { duration: 2.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
+          }}
         >
           <picture className={styles.heroPicture}>
             {/* On phones show the original vertical photo instead of the landscape crop */}
@@ -63,7 +61,7 @@ function Hero() {
             />
           </picture>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   )
 }

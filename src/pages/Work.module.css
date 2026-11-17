@@ -7,7 +7,7 @@
   position: relative;
 }
 
-/* Layers for the opening animation (curtain reveal + slow zoom) */
+/* Layers for the opening animation: the frame stays put, the photo slides up inside it */
 .heroReveal,
 .heroZoom {
   width: 100%;
