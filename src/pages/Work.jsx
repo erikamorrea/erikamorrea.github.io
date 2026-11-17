@@ -42,7 +42,7 @@ function Hero() {
           className={styles.heroZoom}
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={show ? { opacity: 1 } : undefined}
-          transition={{ duration: 1.5, ease: 'easeInOut', delay: 1.2 }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 1.2 }}
         >
           <picture className={styles.heroPicture}>
             {/* On phones show the original vertical photo instead of the landscape crop */}
