@@ -1,0 +1,44 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  cursor: zoom-out;
+}
+
+/* Whole photo, as large as the screen allows, never cropped */
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1;
+  padding: 6px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .backdrop {
+    padding: 56px 12px;
+  }
+}

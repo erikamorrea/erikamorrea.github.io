@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion'
 import PageTransition from '../components/PageTransition'
 import Footer from '../components/Footer'
+import Lightbox from '../components/Lightbox'
 import styles from './Work.module.css'
 
 // Site address prefix (e.g. /erikamorreaphotography/ on GitHub Pages), so images load from any address
@@ -64,7 +65,7 @@ const gridPhotos = [
   { src: BASE + 'images/grid/grid-23.jpg', pos: 'center 45%', ar: 0.666 },
 ]
 
-function GridItem({ index, photo, onEnter, onLeave }) {
+function GridItem({ index, photo, onEnter, onLeave, onOpen }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-50px' })
 
@@ -81,6 +82,7 @@ function GridItem({ index, photo, onEnter, onLeave }) {
       }}
       onMouseEnter={() => onEnter(index, ref.current)}
       onMouseLeave={onLeave}
+      onClick={() => onOpen(photo.src)}
     >
       <img
         src={photo.src}
@@ -123,6 +125,12 @@ function HoverPreview({ preview }) {
 export default function Work() {
   const gridRef = useRef(null)
   const [preview, setPreview] = useState(null)
+  const [openSrc, setOpenSrc] = useState(null) // photo shown full screen
+
+  const openPhoto = src => {
+    setPreview(null)
+    setOpenSrc(src)
+  }
 
   const showPreview = (index, el) => {
     // touch screens have no real hover
@@ -168,10 +176,13 @@ export default function Work() {
             photo={photo}
             onEnter={showPreview}
             onLeave={() => setPreview(null)}
+            onOpen={openPhoto}
           />
         ))}
         <HoverPreview preview={preview} />
       </div>
+
+      <Lightbox src={openSrc} onClose={() => setOpenSrc(null)} />
 
       <Footer />
     </PageTransition>
