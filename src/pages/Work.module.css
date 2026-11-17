@@ -7,14 +7,6 @@
   position: relative;
 }
 
-/* Layers for the opening fade-in of the hero photo */
-.heroReveal,
-.heroZoom {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
 .heroPicture {
   display: block;
   width: 100%;

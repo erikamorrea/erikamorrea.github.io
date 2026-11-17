@@ -5,7 +5,6 @@ import {
   useScroll,
   useTransform,
   useInView,
-  useReducedMotion,
 } from 'framer-motion'
 import PageTransition from '../components/PageTransition'
 import Footer from '../components/Footer'
@@ -15,10 +14,7 @@ import styles from './Work.module.css'
 // Site address prefix (e.g. /erikamorreaphotography/ on GitHub Pages), so images load from any address
 const BASE = import.meta.env.BASE_URL
 
-// Fade-in timing shared by the hero photo and the section title, so they appear together
-const HERO_FADE = { delay: 0.4, duration: 1.2 }
-
-function Hero({ onStart }) {
+function Hero({ loaded, onLoaded }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -26,47 +22,32 @@ function Hero({ onStart }) {
   })
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3])
-  const reduceMotion = useReducedMotion()
 
-  // Start the intro only once the photo has loaded, so it never reveals an empty frame
+  // Tell the page once the photo is ready (also when it was already cached)
   const imgRef = useRef(null)
-  const [loaded, setLoaded] = useState(false)
   useEffect(() => {
-    if (imgRef.current?.complete) setLoaded(true)
-  }, [])
-
-  const show = loaded || reduceMotion
-
-  // Tell the page when the photo starts appearing (right away if motion is reduced)
-  useEffect(() => {
-    if (reduceMotion) onStart()
-  }, [reduceMotion, onStart])
+    if (imgRef.current?.complete) onLoaded()
+  }, [onLoaded])
 
   return (
     <section ref={ref} className={styles.hero}>
-      {/* Intro: after a short pause the photo simply fades in */}
-      <div className={styles.heroReveal}>
-        <motion.div
-          className={styles.heroZoom}
-          initial={reduceMotion ? false : { opacity: 0 }}
-          animate={show ? { opacity: 1 } : undefined}
-          transition={{ duration: HERO_FADE.duration, ease: 'easeOut', delay: HERO_FADE.delay }}
-          onAnimationStart={() => show && onStart()}
-        >
-          <picture className={styles.heroPicture}>
-            {/* On phones show the original vertical photo instead of the landscape crop */}
-            <source media="(max-width: 768px)" srcSet={`${BASE}images/hero-mobile.jpg`} />
-            <motion.img
-              ref={imgRef}
-              src={`${BASE}images/hero.jpg`}
-              alt=""
-              className={styles.heroImg}
-              style={{ scale, opacity }}
-              onLoad={() => setLoaded(true)}
-            />
-          </picture>
-        </motion.div>
-      </div>
+      {/* Shown only once fully downloaded, so it never draws in bit by bit */}
+      <picture
+        className={styles.heroPicture}
+        style={{ visibility: loaded ? 'visible' : 'hidden' }}
+      >
+        {/* On phones show the original vertical photo instead of the landscape crop */}
+        <source media="(max-width: 768px)" srcSet={`${BASE}images/hero-mobile.jpg`} />
+        <motion.img
+          ref={imgRef}
+          src={`${BASE}images/hero.jpg`}
+          alt=""
+          className={styles.heroImg}
+          style={{ scale, opacity }}
+          fetchPriority="high"
+          onLoad={onLoaded}
+        />
+      </picture>
     </section>
   )
 }
@@ -161,8 +142,9 @@ export default function Work() {
   const gridRef = useRef(null)
   const [preview, setPreview] = useState(null)
   const [openSrc, setOpenSrc] = useState(null) // photo shown full screen
-  const [heroStarted, setHeroStarted] = useState(false)
-  const markHeroStarted = useCallback(() => setHeroStarted(true), [])
+  // Hero photo, title and grid all appear at once, when the hero photo is ready
+  const [heroLoaded, setHeroLoaded] = useState(false)
+  const markHeroLoaded = useCallback(() => setHeroLoaded(true), [])
 
   const openPhoto = photo => {
     setPreview(null)
@@ -193,19 +175,20 @@ export default function Work() {
 
   return (
     <PageTransition>
-      <Hero onStart={markHeroStarted} />
+      <Hero loaded={heroLoaded} onLoaded={markHeroLoaded} />
 
-      {/* Fades in together with the hero photo */}
-      <motion.p
+      <p
         className={styles.sectionTitle}
-        initial={{ opacity: 0 }}
-        animate={heroStarted ? { opacity: 1 } : undefined}
-        transition={{ duration: HERO_FADE.duration, ease: 'easeOut', delay: HERO_FADE.delay }}
+        style={{ visibility: heroLoaded ? 'visible' : 'hidden' }}
       >
         Portraits and Street Photography
-      </motion.p>
+      </p>
 
-      <div className={styles.grid} ref={gridRef}>
+      <div
+        className={styles.grid}
+        ref={gridRef}
+        style={{ visibility: heroLoaded ? 'visible' : 'hidden' }}
+      >
         {gridPhotos.map((photo, i) => (
           <GridItem
             key={photo.src}
