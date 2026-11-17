@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   motion,
   AnimatePresence,
@@ -15,7 +15,7 @@ import styles from './Work.module.css'
 // Site address prefix (e.g. /erikamorreaphotography/ on GitHub Pages), so images load from any address
 const BASE = import.meta.env.BASE_URL
 
-function Hero() {
+function Hero({ onShown }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -34,6 +34,11 @@ function Hero() {
 
   const show = loaded || reduceMotion
 
+  // Tell the page when the photo is fully visible (right away if motion is reduced)
+  useEffect(() => {
+    if (reduceMotion) onShown()
+  }, [reduceMotion, onShown])
+
   return (
     <section ref={ref} className={styles.hero}>
       {/* Intro: after a short pause the photo simply fades in */}
@@ -43,6 +48,7 @@ function Hero() {
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={show ? { opacity: 1 } : undefined}
           transition={{ duration: 1.2, ease: 'easeOut', delay: 0.4 }}
+          onAnimationComplete={() => show && onShown()}
         >
           <picture className={styles.heroPicture}>
             {/* On phones show the original vertical photo instead of the landscape crop */}
@@ -152,6 +158,10 @@ export default function Work() {
   const gridRef = useRef(null)
   const [preview, setPreview] = useState(null)
   const [openSrc, setOpenSrc] = useState(null) // photo shown full screen
+  const [heroShown, setHeroShown] = useState(false)
+  const titleRef = useRef(null)
+  const titleInView = useInView(titleRef, { once: true })
+  const markHeroShown = useCallback(() => setHeroShown(true), [])
 
   const openPhoto = photo => {
     setPreview(null)
@@ -182,13 +192,14 @@ export default function Work() {
 
   return (
     <PageTransition>
-      <Hero />
+      <Hero onShown={markHeroShown} />
 
+      {/* Enters only after the hero photo has finished appearing (and once it's on screen) */}
       <motion.p
+        ref={titleRef}
         className={styles.sectionTitle}
         initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        animate={heroShown && titleInView ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       >
         Portraits and Street Photography
