@@ -108,10 +108,11 @@
     object-position: center;
   }
 
+  /* Phones: 2 larger photos per row instead of 4 small ones */
   .grid {
-    --cols: 4;
-    --gap: 3px;
-    padding: 0 16px 40px;
+    --cols: 2;
+    --gap: 8px;
+    padding: 0 16px 48px;
   }
 
   .sectionTitle {
